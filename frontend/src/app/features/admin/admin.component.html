@@ -1,0 +1,89 @@
+<div class="page-container">
+  <nav class="glass-panel top-nav">
+    <div class="nav-brand">MPloyChek</div>
+    <div class="nav-links">
+      <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+      <a routerLink="/admin" class="nav-link active">Admin Panel</a>
+      <a routerLink="/dashboard" class="btn btn-primary btn-sm">Back</a>
+    </div>
+  </nav>
+
+  <main class="content-wrapper">
+    <header class="page-header">
+      <h1>Admin Panel</h1>
+      <p>Manage users in the system.</p>
+    </header>
+
+    <section class="records-section glass-panel">
+      <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>System Users</h2>
+        <button class="btn btn-primary" (click)="toggleAddForm()">{{ showAddForm ? 'Cancel' : 'Add User' }}</button>
+      </div>
+
+      <!-- Add User Form -->
+      <div *ngIf="showAddForm" class="add-user-form" style="margin-bottom: 2rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+        <h3 style="margin-bottom: 1rem;">Add New User</h3>
+        <form (ngSubmit)="addUser()" #addForm="ngForm" style="display: grid; gap: 1rem; grid-template-columns: 1fr 1fr;">
+          <div class="input-group">
+            <label class="input-label">Name</label>
+            <input class="input-field" type="text" name="name" [(ngModel)]="newUser.name" required>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Username</label>
+            <input class="input-field" type="text" name="username" [(ngModel)]="newUser.username" required>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Password</label>
+            <input class="input-field" type="password" name="password" [(ngModel)]="newUser.password" required>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Role</label>
+            <select class="input-field" name="role" [(ngModel)]="newUser.role" required>
+              <option value="General User">General User</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div style="grid-column: span 2;">
+            <button class="btn btn-primary" type="submit" [disabled]="!addForm.form.valid || isAdding">
+              {{ isAdding ? 'Adding...' : 'Save User' }}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="table-container" *ngIf="!isLoading; else loadingTemplate">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Username</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users">
+              <td>{{ user.id }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.username }}</td>
+              <td>
+                <span class="badge">{{ user.role }}</span>
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; background-color: #DC2626;" (click)="deleteUser(user.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #loadingTemplate>
+        <div class="loading-state">
+          <span class="spinner large"></span>
+          <p>Loading users...</p>
+        </div>
+      </ng-template>
+    </section>
+  </main>
+</div>

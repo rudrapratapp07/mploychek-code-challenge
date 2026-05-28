@@ -1,0 +1,33 @@
+<div class="page-container login-page">
+  <div class="glass-panel login-card">
+    <div class="login-header">
+      <h2>MPloyChek</h2>
+      <p>Secure Background Verification</p>
+    </div>
+    
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="input-group">
+        <label class="input-label" for="username">User ID</label>
+        <input class="input-field" type="text" id="username" name="username" [(ngModel)]="username" required>
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label" for="password">Password</label>
+        <input class="input-field" type="password" id="password" name="password" [(ngModel)]="password" required>
+      </div>
+
+      <div *ngIf="error" class="error-msg">
+        {{ error }}
+      </div>
+      
+      <button class="btn btn-primary login-btn" type="submit" [disabled]="!loginForm.form.valid || isLoading">
+        <span *ngIf="isLoading" class="spinner btn-spinner"></span>
+        <span *ngIf="!isLoading">Login</span>
+      </button>
+    </form>
+    
+    <div class="demo-credentials">
+      <small>Demo: admin/password (Admin) | user/password (General User)</small>
+    </div>
+  </div>
+</div>

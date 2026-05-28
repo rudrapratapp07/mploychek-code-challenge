@@ -1,0 +1,59 @@
+<div class="page-container">
+  <nav class="glass-panel top-nav">
+    <div class="nav-brand">MPloyChek</div>
+    <div class="nav-links">
+      <a routerLink="/dashboard" class="nav-link active">Dashboard</a>
+      <a routerLink="/admin" class="nav-link" *ngIf="user?.role === 'Admin'">Admin Panel</a>
+      <button class="btn btn-primary btn-sm" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <main class="content-wrapper">
+    <header class="page-header">
+      <h1>Welcome back, {{ user?.name }}</h1>
+      <p>Role: <span class="badge">{{ user?.role }}</span></p>
+    </header>
+
+    <section class="records-section glass-panel">
+      <div class="section-header">
+        <h2>Verification Records</h2>
+        <p>A list of your background verification records.</p>
+      </div>
+
+      <div class="table-container" *ngIf="!isLoadingRecords; else loadingTemplate">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>Record ID</th>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of records">
+              <td>{{ record.id }}</td>
+              <td>{{ record.title }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="record.status.toLowerCase()">
+                  {{ record.status }}
+                </span>
+              </td>
+              <td>{{ record.date | date:'mediumDate' }}</td>
+            </tr>
+            <tr *ngIf="records.length === 0">
+              <td colspan="4" class="text-center">No records found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <ng-template #loadingTemplate>
+        <div class="loading-state">
+          <span class="spinner large"></span>
+          <p>Loading records with artificial delay to demonstrate async processing...</p>
+        </div>
+      </ng-template>
+    </section>
+  </main>
+</div>
